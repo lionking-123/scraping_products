@@ -2,12 +2,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.uic import loadUiType
-from functools import partial
+
+from sicessolar import sicessolar
 
 import os
 import sys
-import time
-from multiprocessing import Process
 
 # ============= Const variables define part =============
 
@@ -20,8 +19,13 @@ FROM_RESET, _ = loadUiType(os.path.join(
 class Worker(QObject):
     finished = pyqtSignal()
     scrap_id = 0
+    user_email = ""
+    user_pwd = ""
 
     def run(self):
+        if(self.scrap_id == 1):
+            print(self.user_email, self.user_pwd)
+            sicessolar(self.user_email, self.user_pwd)
 
         self.finished.emit()
 
@@ -47,48 +51,42 @@ class MainWindow(QMainWindow, FROM_RESET):
 
         self.btnClose.clicked.connect(self.close)
         self.btnMinimize.clicked.connect(self.showMinimized)
+        self.attach_btn1.clicked.connect(self.scrape_sicessolar)
 
-    # def scrape_coincodex(self):
-    #     self.thread = QThread()
-    #     self.worker = Worker()
-    #     self.worker.scrap_id = 3
-    #     self.worker.moveToThread(self.thread)
+    def scrape_sicessolar(self):
+        self.thread = QThread()
+        self.worker = Worker()
+        self.worker.scrap_id = 1
+        self.worker.user_email = self.email1.text()
+        self.worker.user_pwd = self.pwd1.text()
 
-    #     self.thread.started.connect(self.worker.run)
-    #     self.worker.finished.connect(self.thread.quit)
-    #     self.worker.finished.connect(self.worker.deleteLater)
-    #     self.thread.finished.connect(self.thread.deleteLater)
+        self.worker.moveToThread(self.thread)
 
-    #     self.thread.start()
-    #     self.attach_btn1.setEnabled(False)
-    #     self.attach_btn2.setEnabled(False)
-    #     self.attach_btn3.setEnabled(False)
-    #     self.attach_btn4.setEnabled(False)
-    #     self.attach_btn5.setEnabled(False)
-    #     self.attach_btn6.setEnabled(False)
-    #     self.attach_btn7.setEnabled(False)
-    #     self.attach_btn8.setEnabled(False)
-    #     self.attach_btn9.setEnabled(False)
-    #     self.attach_btn10.setEnabled(False)
-    #     self.attach_btn11.setEnabled(False)
-    #     self.attach_btn12.setEnabled(False)
-    #     self.attach_btn3.setText("Extracting ...")
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
 
-    #     self.thread.finished.connect(
-    #         lambda: (self.attach_btn1.setEnabled(True),
-    #                  self.attach_btn2.setEnabled(True),
-    #                  self.attach_btn3.setEnabled(True),
-    #                  self.attach_btn4.setEnabled(True),
-    #                  self.attach_btn5.setEnabled(True),
-    #                  self.attach_btn6.setEnabled(True),
-    #                  self.attach_btn7.setEnabled(True),
-    #                  self.attach_btn8.setEnabled(True),
-    #                  self.attach_btn9.setEnabled(True),
-    #                  self.attach_btn10.setEnabled(True),
-    #                  self.attach_btn11.setEnabled(True),
-    #                  self.attach_btn12.setEnabled(True),
-    #                  self.attach_btn3.setText("Extract"))
-    #     )
+        self.thread.start()
+        self.attach_btn1.setEnabled(False)
+        self.attach_btn2.setEnabled(False)
+        self.attach_btn3.setEnabled(False)
+        self.attach_btn4.setEnabled(False)
+        self.attach_btn5.setEnabled(False)
+        self.attach_btn6.setEnabled(False)
+        self.attach_btn7.setEnabled(False)
+        self.attach_btn1.setText("Extracting ...")
+
+        self.thread.finished.connect(
+            lambda: (self.attach_btn1.setEnabled(True),
+                     self.attach_btn2.setEnabled(True),
+                     self.attach_btn3.setEnabled(True),
+                     self.attach_btn4.setEnabled(True),
+                     self.attach_btn5.setEnabled(True),
+                     self.attach_btn6.setEnabled(True),
+                     self.attach_btn7.setEnabled(True),
+                     self.attach_btn1.setText("Extract"))
+        )
 
     def closeEvent(self, event):
         reply = QMessageBox.question(self, 'Application Close', 'Are you sure you want to close the application?',
