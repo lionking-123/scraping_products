@@ -4,6 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.uic import loadUiType
 
 from sicessolar import sicessolar
+from plataforma import plataforma
 
 import os
 import sys
@@ -24,8 +25,9 @@ class Worker(QObject):
 
     def run(self):
         if(self.scrap_id == 1):
-            print(self.user_email, self.user_pwd)
             sicessolar(self.user_email, self.user_pwd)
+        elif(self.scrap_id == 2):
+            plataforma(self.user_email, self.user_pwd)
 
         self.finished.emit()
 
@@ -52,6 +54,42 @@ class MainWindow(QMainWindow, FROM_RESET):
         self.btnClose.clicked.connect(self.close)
         self.btnMinimize.clicked.connect(self.showMinimized)
         self.attach_btn1.clicked.connect(self.scrape_sicessolar)
+        self.attach_btn2.clicked.connect(self.scrape_plataforma)
+
+    def scrape_plataforma(self):
+        self.thread = QThread()
+        self.worker = Worker()
+        self.worker.scrap_id = 2
+        self.worker.user_email = self.email2.text()
+        self.worker.user_pwd = self.pwd2.text()
+
+        self.worker.moveToThread(self.thread)
+
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        self.thread.start()
+        self.attach_btn1.setEnabled(False)
+        self.attach_btn2.setEnabled(False)
+        self.attach_btn3.setEnabled(False)
+        self.attach_btn4.setEnabled(False)
+        self.attach_btn5.setEnabled(False)
+        self.attach_btn6.setEnabled(False)
+        self.attach_btn7.setEnabled(False)
+        self.attach_btn2.setText("Extracting ...")
+
+        self.thread.finished.connect(
+            lambda: (self.attach_btn1.setEnabled(True),
+                     self.attach_btn2.setEnabled(True),
+                     self.attach_btn3.setEnabled(True),
+                     self.attach_btn4.setEnabled(True),
+                     self.attach_btn5.setEnabled(True),
+                     self.attach_btn6.setEnabled(True),
+                     self.attach_btn7.setEnabled(True),
+                     self.attach_btn2.setText("Extract"))
+        )
 
     def scrape_sicessolar(self):
         self.thread = QThread()

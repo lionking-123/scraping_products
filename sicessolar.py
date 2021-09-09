@@ -5,15 +5,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 def sicessolar(user, pwd):
     src = 'https://app.sicessolar.com/'
     option = webdriver.ChromeOptions()
-    # option.add_argument("--headless")
-    # capa = DesiredCapabilities.CHROME
-    # capa["pageLoadStrategy"] = "none"
 
     try:
         driver = webdriver.Chrome("./UI/chromedriver", options=option)

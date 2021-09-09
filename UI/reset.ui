@@ -1276,7 +1276,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
       <rect>
        <x>20</x>
        <y>110</y>
-       <width>151</width>
+       <width>191</width>
        <height>16</height>
       </rect>
      </property>
@@ -1290,7 +1290,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
 </string>
      </property>
      <property name="text">
-      <string>https://icomarks.com/icos</string>
+      <string>https://plataforma.genyx.com.br</string>
      </property>
     </widget>
     <widget class="QPushButton" name="attach_btn2">
@@ -1804,7 +1804,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>eduardo.nascimentogm@gmail.com</string>
+      <string>leopcastilhos@gmail.com</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="pwd2">
@@ -1817,7 +1817,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
       </rect>
      </property>
      <property name="text">
-      <string>1082000d</string>
+      <string>tilocal@2020</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_3">
