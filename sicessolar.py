@@ -1,6 +1,7 @@
 import gc
 import time
-import pandas as pd
+import mysql.connector
+from datetime import date
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -10,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 def sicessolar(user, pwd):
     src = 'https://app.sicessolar.com/'
     option = webdriver.ChromeOptions()
+    tod = date.today().strftime("%Y-%m-%d")
 
     try:
         driver = webdriver.Chrome("./UI/chromedriver", options=option)
@@ -40,8 +42,14 @@ def sicessolar(user, pwd):
             (By.CSS_SELECTOR, 'div.sc-RbTVP.evvypI')))
         driver.execute_script("window.stop();")
 
-        datas = {}
-        cnt = 1
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="scraping_products"
+        )
+
+        mycursor = mydb.cursor()
 
         while(True):
             divs = driver.find_elements_by_css_selector("div.sc-RbTVP.evvypI")
@@ -55,16 +63,18 @@ def sicessolar(user, pwd):
                 data["Product_name"] = spans[0].text
                 data["Product_price"] = spans[1].text
 
-                datas[str(cnt)] = data
-                cnt += 1
+                sql = "INSERT INTO sices (Product_Name, Product_Price, Product_image, Extracted_date) VALUES (%s, %s, %s, %s)"
+                val = (data["Product_name"], data["Product_price"],
+                       data["Product_image"], tod)
+                mycursor.execute(sql, val)
+
+                mydb.commit()
 
             btn = driver.find_element_by_css_selector(
                 "div > button:nth-child(5)")
             if(btn.get_attribute("disabled") != None):
-                print("Cancel")
                 break
             else:
-                print(btn.get_attribute("class"))
                 driver.execute_script(
                     "document.querySelector('div > button:nth-child(5)').click();")
                 time.sleep(9)
@@ -73,8 +83,5 @@ def sicessolar(user, pwd):
         driver.close()
     except:
         pass
-
-    df = pd.DataFrame(data=datas).T
-    df.to_csv("./results/sicessolar.csv")
 
     gc.collect()

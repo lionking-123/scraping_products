@@ -1,6 +1,7 @@
 import gc
 import time
-import pandas as pd
+import mysql.connector
+from datetime import date
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -10,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 def plataforma(user, pwd):
     src = 'https://plataforma.genyx.com.br/Login/Login.aspx'
     option = webdriver.ChromeOptions()
+    tod = date.today().strftime("%Y-%m-%d")
 
     try:
         driver = webdriver.Chrome("./UI/chromedriver", options=option)
@@ -36,8 +38,14 @@ def plataforma(user, pwd):
             (By.CSS_SELECTOR, 'div.box-ecommerce')))
         driver.execute_script("window.stop();")
 
-        datas = {}
-        cnt = 1
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="scraping_products"
+        )
+
+        mycursor = mydb.cursor()
 
         divs = driver.find_elements_by_css_selector("div.box-ecommerce")
         for div in divs:
@@ -55,17 +63,18 @@ def plataforma(user, pwd):
 
                 img = div.find_element_by_tag_name("img")
                 data["Product_Image"] = img.get_attribute("src")
+
+                sql = "INSERT INTO genyx (Product_Name, Product_Capacity, Product_Structure, Product_Price, Product_Low_Price, Product_Image, Extracted_Date) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                val = (data["Product_Name"], data["Product_Capacity"], data["Product_Structure"],
+                       data["Product_Price"], data["Product_Low_Price"], data["Product_Image"], tod)
+                mycursor.execute(sql, val)
+
+                mydb.commit()
             except:
                 pass
-
-            datas[str(cnt)] = data
-            cnt += 1
 
         driver.close()
     except:
         pass
-
-    df = pd.DataFrame(data=datas).T
-    df.to_csv("./results/plataforma.csv")
 
     gc.collect()

@@ -1337,7 +1337,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
 </string>
      </property>
      <property name="text">
-      <string>https://coincodex.com/sto-list</string>
+      <string>https://contas.nexen.com.br</string>
      </property>
     </widget>
     <widget class="QPushButton" name="attach_btn3">
@@ -1373,7 +1373,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
       <rect>
        <x>20</x>
        <y>210</y>
-       <width>140</width>
+       <width>151</width>
        <height>16</height>
       </rect>
      </property>
@@ -1387,7 +1387,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
 </string>
      </property>
      <property name="text">
-      <string>https://cryptorank.io/</string>
+      <string>https://www.aldo.com.br</string>
      </property>
     </widget>
     <widget class="QPushButton" name="attach_btn4">
@@ -1874,7 +1874,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
       </rect>
      </property>
      <property name="text">
-      <string>1082000d</string>
+      <string>tilocal@2020</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_5">
@@ -1934,7 +1934,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>eduardo.nascimentogm@gmail.com</string>
+      <string>leopcastilhos@gmail.com</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="pwd4">
@@ -1947,7 +1947,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
       </rect>
      </property>
      <property name="text">
-      <string>1082000d</string>
+      <string>12345678</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_7">
@@ -2007,7 +2007,7 @@ QPushButton:pressed{background-color:rgba(57,167,23,235);}</string>
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>eduardo.nascimentogm@gmail.com</string>
+      <string>leonardo.faria@hotmail.com</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="pwd5">
